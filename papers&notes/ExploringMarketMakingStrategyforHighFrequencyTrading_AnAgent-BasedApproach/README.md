@@ -28,7 +28,7 @@
 
 ## HFTers交易行为
 对于每一个交易时间段内，每一个活跃的${HFT}^j$的行为如下：
-1. ${HFT}^j$ 根据价格在时间t的波动 $P_t^{flu}(bps)$ 以及自身预先设置的是否行动的threshold ${HF}^j\_at$，决定是否活跃，如果 $P_t^{flu}>HF^j\_at$ 则 ${HFT}^j$ 处于活跃状态.
+1. ${HFT}^j$ 根据价格在时间t的波动 $P_t^{flu}(bps)$ 以及自身预先设置的是否行动的threshold ${HF}^j\_at$，决定是否活跃，如果 $P_t^{flu}$>$HF^j\_at$ 则 ${HFT}^j$ 处于活跃状态.
 $$
 P_t^{flu}=\mid\frac{p_{t-1}-p_{t-2}}{p_{t-1}}\mid\times10,000\ \ \ and\ \ {HF}^j\_at\sim U(\alpha_{min}^H,\alpha_{max}^H)
 $$
