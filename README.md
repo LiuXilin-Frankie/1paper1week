@@ -16,7 +16,7 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 
 
 ## Time line
-| Paper | Time | Type | Remark
-| ----- | ---- | ---- | ------ |
-| [Exploring Market Making Strategy for High Frequency Trading: An Agent-Based Approach](paper&notes/ExploringMarketMakingStrategyforHighFrequencyTrading_AnAgent-BasedApproach) | 2023.06.04 | market making | 
-| [The Micro-Price: A High Frequency Estimator of Future Prices](paper&notes/TheMicro-Price_AHighFrequencyEstimatorofFuturePrices) | 2023.06.13 | mid price | method about how to build model|
+| No. | Paper Name | Read Time | Tag | Remark
+| --- | ---------- | --------- | --- | ------ |
+| 1 | [Exploring Market Making Strategy for High Frequency Trading: An Agent-Based Approach](paper&notes/ExploringMarketMakingStrategyforHighFrequencyTrading_AnAgent-BasedApproach) | 2023.06.04 | market making | 
+| 2 | [The Micro-Price: A High Frequency Estimator of Future Prices](paper&notes/TheMicro-Price_AHighFrequencyEstimatorofFuturePrices) | 2023.06.13 | mid price | method about how to build model|
