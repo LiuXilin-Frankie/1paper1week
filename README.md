@@ -1,4 +1,4 @@
-![1paper1week](docs/1paper1week.png)
+![1paper1week](docs/1paper1week-git.jpg)
 
 # My self learning plan
 
