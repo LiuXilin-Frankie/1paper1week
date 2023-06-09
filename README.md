@@ -14,6 +14,7 @@ The project includes the original text of the paper and the notes I wrote. The n
 
 This item is mainly for personal use. Maybe the understanding of the paper I wrote was not deep enough, which led to ridicule by my peers. But for me, better late than never.
 
+:warning: please install [MathJax](https://github.com/orsharir/github-mathjax) if your chrome cannot display formula in a right way.
 
 ## Time line
 | No. | Paper Name | Read Time | Tag | Remark
