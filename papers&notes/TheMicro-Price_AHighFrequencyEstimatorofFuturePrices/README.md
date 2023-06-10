@@ -11,7 +11,8 @@
 4. 作者之后实证指出了为什么自己的micro-price更好。
 
 ## Introduction
-HFT是一个很宽松的定义，在各种不相关的情况下被滥用。作者认为的HFT有以下几个共同特点:1.需要compute technology(硬件或者软件)；2.允许Agents以人类无法反应过来的速度进行交易。插一句，最近写高频交易公司的笔试题，该公司把 minute level rebalance 叫做 mid/long term，让我甚是震撼。
+HFT是一个很宽松的定义，在各种不相关的情况下被滥用。作者认为的HFT有以下几个共同特点:1.需要compute technology(硬件或者软件)；2.允许Agents以人类无法反应过来的速度进行交易。插一句，最近写高频交易公司的笔试题，该公司把 minute level rebalance 叫做 mid/long term，让我甚是震撼。作者这里之后给出了高频的几个方向：Optimal order splitting, pairs trading, statistical arbitrage, market making, liquidity provision, latency arbitrage and sentiment
+analysis of news。
 
 ### mid-price
 对于高频中甚是常用的orderbook数据来说，最经典的是 mid-price，定义如下：
@@ -52,3 +53,41 @@ $I$ 同上文，$S$代表的是Spread，$S=P^a-P^b$
 3. 可以根据过去的LOB数据计算，并且运算非常的快。
 
 ## General Framework
+对于价格的预测应该服从以下的形式,这样的构造保证了他是一个martingale：
+$$
+P^i_t = E[M_{\tau_i}|F_t]
+$$
+$F_t$代表information in LOB，stopping time $\tau_1,......,\tau_n$代表mid-price发生改变的时间，比如：
+$$
+\tau_1 = inf\{u>t| M_u - M_{u^-} \neq 0\}
+$$
+$$
+\tau_{i+1} = inf\{u>\tau_{i}| M_u - M_{u^-} \neq 0\}
+$$
+所以micro-price的定义是：
+$$
+P^{micro}_t = \lim \limits_{i \rightarrow \infty} P^i_t
+$$
+选用$\lim$的好处是：1. 每个截面上都是独立的； 2. 过滤掉了一些噪音
+
+同时论文做出了一些假设：
+### Assumption 1：
+LOB中的信息$F_t$是一个马尔可夫过程且只跟三个维度的信息有关（或者说过滤后信息只跟这三个维度有关），分别是：1.mid-price $M_t$; 2. bid-ask spread $S_t = \frac{1}{2}(P^a_t - P^b_t)$; 3. imbalance $I_t$.
+### Assumption 2:
+mid-price 的变化跟mid-price的大小无关，或者说价格的变动在每一个tick上是一样的。
+$$
+E[M_{\tau_{i}} - M_{\tau_{i-1}}|M_t,I_t,S_t] = E[M_{\tau_{i}} - M_{\tau_{i-1}}|I_t,S_t]
+$$
+
+### Theorem
+given 2 assumption:
+$$
+P^i_t = M_t + \sum_{k=1}^i g^k(I_t,S_t)
+$$
+where
+$$
+g^1(I,S) = E[M_{\tau_{1}} - M_{\tau_{t}}|I_t,S_t]
+$$
+$$
+g^{i+1}(I,S) = E[g^{i}(I_{\tau_1},S_{\tau_1})|I_t,S_t],\  compute \ recursively
+$$
