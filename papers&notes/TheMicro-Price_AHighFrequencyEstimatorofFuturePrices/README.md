@@ -11,7 +11,7 @@
 4. 作者之后实证指出了为什么自己的micro-price更好。
 
 ## Introduction
-HFT是一个很宽松的定义，在各种不相关的情况下被滥用。作者认为的HFT有以下几个共同特点:1.需要compute technology(硬件或者软件)；2.允许Agents以人类无法反应过来的速度进行交易。插一句随笔，最近写高频交易公司的笔试题，该公司把 minute level rebalance 叫做 mid/long term，让我甚是震撼。
+HFT是一个很宽松的定义，在各种不相关的情况下被滥用。作者认为的HFT有以下几个共同特点:1.需要compute technology(硬件或者软件)；2.允许Agents以人类无法反应过来的速度进行交易。插一句，最近写高频交易公司的笔试题，该公司把 minute level rebalance 叫做 mid/long term，让我甚是震撼。
 
 ### mid-price
 对于高频中甚是常用的orderbook数据来说，最经典的是 mid-price，定义如下：
