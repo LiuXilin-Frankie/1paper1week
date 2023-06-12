@@ -53,7 +53,7 @@ $I$ 同上文，$S$代表的是Spread，$S=P^a-P^b$
 3. 可以根据过去的LOB数据计算，并且运算非常的快。
 
 ## General Framework
-对于价格的预测应该服从以下的形式,这样的构造保证了他是一个martingale：
+对于价格的预测应该服从以下的形式，这样的构造保证了他是一个martingale：
 $$
 P^i_t = E[M_{\tau_i}|F_t]
 $$
