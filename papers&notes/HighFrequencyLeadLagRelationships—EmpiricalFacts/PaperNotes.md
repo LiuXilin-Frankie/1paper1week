@@ -22,7 +22,7 @@
 作者同时使用了一些指标来衡量asset的流动性，如下：
 + the average duration between two consecutive trades $<\Delta t>$，连续两次交易的平均时间间隔
 + the average tick size δ in percentage of the midquote $<\delta/m>$，tick size和平均midquote的比
-+ the average bid/ask spread expressed in tick size $<s>/\delta$ 平均 bidask spread 和tick的比值
++ the average bid/ask spread expressed in tick size $ <s>/\delta$ 平均 bidask spread 和tick的比值
 + the frequency of unit bid/ask spread $1_{\{s=δ\}}$ bidask spread 恰好为一个标准tick的出现频率
 + the frequency of trades hitting more than the best limit price available $1_{\{trade \ through\}}$ 交易突破最优价格的频率
 + a proxy for the daily volatility expressed in tick size : $<|\Delta m|>/\delta$, where $\Delta m$ is the midquote variation between two consecutive trades 连续两次交易的变化与tick的比值
