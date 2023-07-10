@@ -52,12 +52,21 @@ bias in effective bid-ask spread 主要造成以下影响：
 
 同时作者使用策略评估，对fair price更好的评估能否改进策略的表现？作者分别使用 midpoint 以及 weighted midpoint，模拟了 liquidity timing strategy 的表现。作者发现更好的评估指标不光能获得更好的策略表现，并且 excution shortfall 更低，which is a transaction price-based measure that does not rely on the accuracy of the fundamental value estimator.
 
+### 胡说八道
+关于流动性需求弹性的想法：
+1. 已知流动性需求弹性存在，weighted midponit 和 midpoint 都是有偏估计
+2. midpoint 为什么有偏，因为完全低估（无视）了价格需求弹性
+3. weighted midpoint 为什么有偏，因为高估了价格需求弹性
 
+所以是不是假如真的存在 $P^{fair}$ weighted midponit 和 midpoint 虽然都是有偏，但是偏在了完全不同的方向。
 
+假如我现在引入一个新的概念：
+$$
+new-price = (P^{weighted \ midponit} + P^{midponit})/2
+$$
+效果会如何呢
 
-
-
-
+如果我拿出xx，阁下又该如何应对呢。
 
 ## 嘻嘻
 之前忙于搬家拖更了，这周三更补上。人总有忙的时候嘛（我是不会承认我小说瘾犯了，连续看了一周的小说的）嘻嘻。
