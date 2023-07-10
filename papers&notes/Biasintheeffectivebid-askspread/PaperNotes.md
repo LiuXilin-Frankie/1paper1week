@@ -1,67 +1,63 @@
 ![1paper1week](../../docs/1paper1week-git.jpg)
 
-# pairs trading with jump model
+# Bias in the effective of bid-ask spread
 
-本来这周的研究方向是lead-lag， 但是由于我太菜没有看懂，所以先做一些其他的工作铺垫一下。这篇文章发表于2018年，发在了QF上，作者自称在减掉了交易成本之后策略能有5.3的夏普，同时该文章附带有大量的实证结果。
+这次的文章在实证方面进一步研究了bid-ask spread。拿经典的 midpoint、weighted midpoint 以及之前文章提到过的 stikov micro-price 进行实证研究。之前的 stikov micro-price 也在文末用自己的方式证明了自己的研究成果更好，但是证明方式略显潦草，对bias形成的本质也没有这一篇如此详细。这一篇发布在 Journal of Financial Economics 上，洋洋洒洒有60页，所以这篇文章会分成多篇来写，但是每一篇中文帖子的内容含量绝对不会少。
 
+
+## Abstract
+这篇主要挑战了midpoint的 benchmark 地位，作者认为midpoint在 discrete prices and elastic liquidity demand 情况下错估了 fair-price。
 
 ## Introduction
-配对交易发展至今主要分化成了几个流派：
-1. time-series approach which focuses on mean-reverting spreads
-2. describing the spread with a mean- reverting Gaussian Markov chain model, observed in Gaussian noise. The optimal entry and exit signals are derived by maximizing the probability of successful termination of the pairs trading strategy.
+作者先介绍 effective bid-ask spread 的应用场景。主要有如下：
+1. 评估market架构变动的效果
+2. 交易成本测量
+3. 资产定价
+4. 公司金融
+5. 宏观
 
-作者认为自己主要的contribution如下：
-1. 介绍了一个pairs选择方法，基于jump diffusion model
-2. 建立了一个策略
-3. 在历史上进行回测，分别分析原因
-4. spreads确实继承了很强的均值回归属性并且产生稳健的收益。
-
-
-## Data Selection
-1998.01-2015.12, top 500 in US
-
-## Methodology
-对于 mean-reverting spread 来说（作者这里以及之后把 mean-reverting spread 称为 spread），spread为：
+作者进一步介绍了measure传统 effective bid-ask spread 的midpoint，认为midpoint过度估计了流动性，并且说明了什么是effective bid-ask spread，在本文中：
 $$
-X_t = ln(\frac{S_A(t)}{S_A(0)}) - ln(\frac{S_B(t)}{S_B(0)}), \  \ t \geq 0
+effective \ spread := (P^{ask}/P^{bid}- P^{fair})*2
 $$
-所以对于 spred $X_t$ 来说，它服从：
-$$
-dX_t = \theta (\mu -X_t)dt + \sigma dW_t, \ \ X_0=x
-$$
+概念略显抽象，总之就是一个衡量最优买卖价格偏离真实价值的值，越小代表最优买卖价偏离的越小。文中给了一个简单的例子，在“The midpoint effective spread bias can be illustrated”那一段。这个定义的语言描述或许可以叫做：立刻执行价格成本与真实价格的差值的两倍。
 
-但是这样的建模或许是不正确的。因为开盘停盘机制，一些非连续的gap被捕捉到，而上面的公式不可能具备解释该种改变的能力。这些不连续的jump发生频率取决于停盘以及下一次的开盘时间。在这篇论文中，假设盘中发生跳跃的概率为零。一夜之间，跳跃以概率 λdt 随机发生。因此，等式中的最后一个组成部分仅在一夜之间影响利差。 我们定义 λ(t) 使得：
-$$
-\lambda(t) = 0. \ if \ the \ observation \ is \ intraday
-$$
-$$
-\lambda(t) = \lambda. \ otherwise
-$$
-公式变为：
-$$
-dX_t = \theta (\mu -X_t)dt + \sigma dW_t + lnJ_tdN_t, \ \ X_0=x
-$$
 
-细节懒得从paper抄了。总之就是在模型中单独加入了一个 jump part。在模型拟合的过程中，如果数据为隔夜并且突然出现非常大的差值（统计上显著），那我们就把这个差值理解为jump，不参与到模型的拟合回归。
+所以在我们测算 effective spread 的时候，我们就需要计算一个价格来代替公式中的$ P^{fair}$，传统金融使用midpoint作为benchmark，这显然是不合理的。绝大多数情况下LOB都是asymmetry的，这个时候在两边立刻执行的执行成本不可能相同，这就涉及到作者介绍的一个新概念，liquidity demand is elastic。
 
-## study design & trading design
-作者之后根据模型设计了策略，类似于传统pairs-trading策略，所以这里暂时忽略。
+### elastic demand
+价格需求的弹性的。所以对于立刻执行的成本来说，两边是完全不一样的。
 
-## Backtest
-作者将自己的策略拿出来与其它的进行对比，作者的策略名称指代为JDM，其它经典的策略分别为CDM、BBM、OUM（几乎囊括了主流配对交易策略），对比结果如下
+```
+If traders respond to the cost asymmetry by trading more on the side of the market where the effective spread is tighter, as modeled by Goettler et al. (2005), the liquidity demand is elastic.
+```
 
-### strategy performance
-总体上作者的JDM策略在，减掉了交易成本（作者没说剪了多少）之后，产生了大概60%的收益，以及5.3的夏普。
+### Approach
+作者证明了midpoint是无偏估计的条件，只有当交易的方向完全与资产的基本价值无关的时候，midpoint是无偏估计，即investor完全不在意或者说流动需求弹性不存在。
 
-### Analyze year by year
-作者控制 CDM、BBM、OUM、JDM 只交易每年的前10pairs情况下，对策略进行了对比。
+作者又引出了其它两个概念作为midpoint的对照，分别是 weighted midpoint 以及我们之前提到过的 stikov micro-price。这里不过多介绍这里啊分别是什么。
 
-![fig](fig1.png)
+### Data Sample
+1. 作者先是使用了S&P500成分股，2015年12月 7-11 的 trade & quote 数据。
+2. 作者又实用了一些纳斯达克交易所披露的HFT交易数据
+3. 最后作者将比较重新放在20年的时间里进行比较，使用NYSE这段时间所有的股票。
 
-作者认为：
-1. 1998-2000 年正值互联网泡沫的增长时期。收益主要跟 bid-ask spread有关。
-2. 2001-2003 战争打响，策略收益主要跟 low div deviation 有关
-3. 2004-2006 温和时期，JDM并没有亮眼的表现
-4. 2007-2009 金融危机，策略尤其在这个时间产生了极强的out-performance
+### Result
+作者认为使用midpoint会造成3.22bps的偏差，weighted midpint的偏差大概是2.84bps。这数字看起来小，但是weighted midponit相比midpoint改进了18%。micro-price相比midpoint改进了23%。
 
-综上， JDM在熊市这种剧烈动荡中的市场表现优异，主要得益于其 jump模块 过滤掉了不必要的信息，符合主管预期。
+bias in effective bid-ask spread 主要造成以下影响：
+1. The bias influences liquidity-sorted portfolios because it varies with price discreteness.
+2. Trading venue rankings are influenced because the bias varies across exchanges.
+3. Finally, the bias feeds through to trading performance evaluations when investors differ in their monitoring of the fundamental value.
+
+同时作者使用策略评估，对fair price更好的评估能否改进策略的表现？作者分别使用 midpoint 以及 weighted midpoint，模拟了 liquidity timing strategy 的表现。作者发现更好的评估指标不光能获得更好的策略表现，并且 excution shortfall 更低，which is a transaction price-based measure that does not rely on the accuracy of the fundamental value estimator.
+
+
+
+
+
+
+
+
+## 嘻嘻
+之前忙于搬家拖更了，这周三更补上。人总有忙的时候嘛（我是不会承认我小说瘾犯了，连续看了一周的小说的）嘻嘻。
