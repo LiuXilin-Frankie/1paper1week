@@ -62,3 +62,94 @@ sudo systemctl start frpc
 
 ## pytorch 环境配置
 
+### 配置anaconda
+
+参考[配置anaconda](https://yangyq.net/2023/03/anaconda-install-and-use.html)
+
+每个用户的环境自己的home目录.conda/envs下。默认更换了清华大学的镜像源。该设置的结果可以保护每个用户创建的env不能被其它用户访问且修改。root用户创建的env所有用户都可运行但不可修改。
+
+
+### 配置git
+centos7 支持的库仅仅更新到git 1.8，无法安装最新的git2.
+
+常见的 `make && make install` 的方法频繁报错，所以采用第三方插件库的方式安装。[安装博客](https://blog.csdn.net/qq_32811865/article/details/123397297)
+
+
+### 安装显卡驱动
+这里参考朋友chenken的文件
+
+准备工作：
+```shell
+yum update
+yum -y install wget
+yum -y install gcc kernel-devel kernel-headers
+```
+
+禁止开源驱动，阻止 nouveau 模块的加载.
+```
+vi /usr/lib/modprobe.d/dist-blacklist.conf
+
+添加blacklist nouveau 
+注释blacklist nvidiafb
+```
+
+重新建立initramfs image文件(生成新的内核，这个内核在开机的时候不会加载 nouveau驱动程序)
+```shell
+mv /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.bak
+dracut /boot/initramfs-$(uname -r).img $(uname -r)
+reboot
+```
+
+驱动下载以及安装
+
+从 https://www.nvidia.cn/Download/index.aspx?lang=cn 选择合适的显卡型号，下载对应的文件.
+此处使用的是4060TI
+```shell
+init 3
+# 进入文件所在文件夹
+chmod +x NVIDIA-Linux-x86_64-340.65.run 
+./NVIDIA-Linux-x86_64-460.91.03.run
+```
+安装完成后运行 nvidia-smi 查看是否安装成功。
+
+
+### CUDA Toolkit
+在[这里](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=CentOS&target_version=7&target_type=runfile_local)选择合适配置进行安装。Architecture选择x86_64，Installer Type选择runfile。根据提示输入网
+⻚上生成的代码下载
+
+`注意`：上面链接只给了最新版本的cuda下载，具体下载cuda版本请参考pytorch 官网，我选择的是12.1。可以在链接中 https://developer.nvidia.com/cuda-12-1-0-download-archive 修改相关的部分寻找。
+
+```shell
+wget https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda_12.1.0_530.30.02_linux.run
+sudo sh cuda_12.1.0_530.30.02_linux.run
+```
+
+修改环境变量(这里的内容请参考安装完成后输出的提示，或者更改您的版本号)
+```shell
+export PATH=$PATH:/usr/local/cuda-12.1/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-12.1/lib64:/usr/lib/x86_64-linux-gnu
+```
+
+使改动生效
+```
+source ~/.bashrc
+```
+
+查看版本号，有输出意味着安装成功
+```nvcc -V```
+
+### cuDNN
+在[英伟达官网](https://developer.nvidia.com/rdp/cudnn-download)注册成为开发者会员并下载对应版本cudnn安装包，并scp到服务器。下载的是 Tar 文件。
+
+参考[官方安装指南](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#installlinux-tar)
+
+
+### 安装pytorch
+这里选择在root用户啊下创建环境
+```shell
+conda create -n pytorch_GPU python=3.11
+conda activate pytorch_GPU
+pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu121
+conda install numpy pandas matplotlib jupyter
+```
+![pytorch-env](/docs/pytorch-env.png)
