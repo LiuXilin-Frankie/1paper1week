@@ -24,5 +24,6 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 | 3 | [Pairs trading with a mean-reverting jump-diffusion model on high-frequency data](papers&notes/PairsTradingwithJumpModel) | 2023.08.19 | mean-reversion | |
 | 4 | [Bias in the effective bid-ask spread](papers&notes/Biasintheeffectivebid-askspread) | 2023.08.26 & 2023.09.03 | mid price | implementation of [No.2](papers&notes/TheMicro-Price_AHighFrequencyEstimatorofFuturePrices)|
 | 5 | [Chapter-3---Algorithmic-Transactaction-Cost-Analysis_2014_The-Science-of-Algorithmic-Trading-and](papers&notes/TransactionCostAnalysis) | 2023.09.10 | measurements of HFT | |
+| 6 | [Setup DeepLearning Linux Server](papers&notes/Linux_server_setup/server_setup.md) | 2023.09.17 | |
 |。。。。
 | x | [High frequency lead/lag relationships — Empirical facts](papers&notes/HighFrequencyLeadLagRelationships—EmpiricalFacts) | 2023.06.19 | mean-reversion | |
