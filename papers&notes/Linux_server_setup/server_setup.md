@@ -10,6 +10,8 @@
 
 我有一张480G的sas ssd，装在背板上面的2.5寸盘位安装系统。另外一张18T的希捷HDD放在前置的3.5寸盘位用来寸数据。一开始安装系统之后发现了蛮多问题，比如1.两张盘放在raid卡下boot设置读不到盘。2.装了系统后我的系统识别不到18T的数据盘等等。在反复地重装系统之后，我选择follow这篇文章[知乎](https://zhuanlan.zhihu.com/p/604893199?utm_id=0)
 
+如果需要添加新的硬盘的话参考[blog](https://blog.csdn.net/weixin_67287151/article/details/128006939)
+
 ## 配置frp
 
 ### frp 原理
