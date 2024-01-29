@@ -26,4 +26,6 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 | 5 | [Chapter-3---Algorithmic-Transactaction-Cost-Analysis_2014_The-Science-of-Algorithmic-Trading-and](papers&notes/TransactionCostAnalysis) | 2023.12.10 | measurements of HFT | |
 | 6 | [Setup DeepLearning Linux Server](papers&notes/Linux_server_setup/server_setup.md) | 2023.12.17 | |
 | 7 | [High-Frequency Trading: A Practical Guide to Algorithmic Strategies and Trading Systems (Wiley Trading)](papers&notes/High-FrequencyTradingAPracticalGuide/readme.md) | 2024.01.15 | statistic arbitrage | book |。。。。
-| x | [High frequency lead/lag relationships — Empirical facts](papers&notes/HighFrequencyLeadLagRelationships—EmpiricalFacts) | 2024.12.19 | mean-reversion | |
+| 8 | [High frequency lead/lag relationships — Empirical facts](papers&notes/HighFrequencyLeadLagRelationships—EmpiricalFacts) | 2024.01.19 | lead-lag | |
+| 9 | [On covariance estimation of non-synchronously observed diffusion processes](papers&notes/OnCovarianceEstimationofNon-synchronouslyObservedDiffusionProcesses) | 2024.01.29 | covariance estimation | |
+
