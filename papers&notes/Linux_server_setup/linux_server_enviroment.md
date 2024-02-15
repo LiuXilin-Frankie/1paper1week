@@ -1,10 +1,26 @@
 # R730XD 配置多用户Anaconda以及配置pytorch环境
-没想到我上一篇R730XD的文章竟然获得了7000+的阅读量，属于是不适合做量化了。因为我经常搞硬盘添加弄坏我的系统环境，导致我多次重装系统，另外我之前找到的一些博客帖子对于环境配置确实有很多可取之处。所以我希望重新整理一篇帖子系统安装指令，也方便我以后瞎搞的时候重装系统。
+没想到我上一篇R730XD的文章竟然获得了7000+的阅读量，属于是不适合做量化了。因为我经常搞硬盘添加弄坏我的系统环境，导致我多次重装系统，另外我之前找到的一些博客帖子对于环境配置确实有很多可取之处。所以我希望重新整理一篇帖子系统安装指令，也方便我以后瞎搞的时候[重装系统](https://blog.csdn.net/yykzyj123456/article/details/123681883)。
 
 以下所有操作默认使用root用户操作，先更新一下系统
 ```shell
 sudo apt-get update
 sudo apt-get upgrade
+```
+另外ubuntu默认不启用root + ssh不能使用root用户登录，为了方便我设置环境所以打开
+```shell
+sudo passwd root
+sudo vim /etc/ssh/sshd_config
+```
+找到并用#注释掉这行：（如果没有就不用注释）
+
+PermitRootLogin prohibit-password
+
+查看是否有PermitRootLogin yes,如果没有，新建一行 添加：PermitRootLogin yes
+
+重启ssh
+```shell
+/etc/init.d/ssh restart
+systemctl restart ssh
 ```
 
 ## 为多用户安装Anaconda环境以及使用方法
@@ -40,7 +56,7 @@ groupadd conda_usr
 ```
 将需要的用户加入该组，注意，如果是新增一个用户，则执行（记得替换username为你想要的名字）：
 ```shell
-adduser username conda_usr
+useradd username -g conda_usr
 ```
 如果是已有用户，则执行（记得替换username为你想要的名字）：
 ```shell
@@ -124,24 +140,71 @@ git version
 ## 安装显卡驱动以及配置pytorch环境
 
 
+### 安装英伟达显卡驱动
+
+#### 禁止开源驱动，阻止 nouveau 模块的加载
+```shell
+vi /etc/modprobe.d/blacklist.conf
+添加:
+blacklist nouveau
+options nouveau modeset=0
+```
+通过如下命令更新系统，使刚刚修改的文件生效：
+```shell
+sudo update-initramfs -u
+reboot
+```
+验证nouveau是否已禁用：
+```shell
+lsmod | grep nouveau
+```
+命令行输出为空,说明nouveau显卡驱动已被禁用，此时可以安装nvidia显卡驱动。
+
+#### 安装nvidia显卡驱动
+
+从英伟达[官网](https://www.nvidia.com/download/index.aspx)下载对应的显卡驱动
+```shell
+wget https://us.download.nvidia.com/XFree86/Linux-x86_64/535.154.05/NVIDIA-Linux-x86_64-535.154.05.run
+
+sudo apt-get install gcc make
+chmod +x NVIDIA-Linux-x86_64-535.154.05.run
+sudo ./NVIDIA-Linux-x86_64-535.154.05.run
+```
+
+使用 nvidia-smi 查看是否安装成功
 
 
+### 安装cuda
+这里选在安装12.1版本
+```shell
+wget https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda_12.1.0_530.30.02_linux.run
+sudo sh cuda_12.1.0_530.30.02_linux.run
+```
+
+安装需要比较久的时间，安装结束后请把提醒的路径加入到环境中
+```shell
+export PATH=$PATH:/usr/local/cuda-12.1/bin
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-12.1/lib64
+
+source ~/.bashrc
+```
+
+检查是否安装成功
+```shell
+nvcc -V
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### 安装 cuDNN
+访问英伟达[官网](https://developer.nvidia.com/cudnn)
+```shell
+wget https://developer.download.nvidia.com/compute/cudnn/9.0.0/local_installers/cudnn-local-repo-ubuntu2204-9.0.0_1.0-1_amd64.deb
+sudo dpkg -i cudnn-local-repo-ubuntu2204-9.0.0_1.0-1_amd64.deb
+sudo cp /var/cudnn-local-repo-ubuntu2204-9.0.0/cudnn-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cudnn
+```
 
 
 
