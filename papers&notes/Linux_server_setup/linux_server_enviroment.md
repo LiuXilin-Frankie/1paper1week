@@ -56,10 +56,12 @@ groupadd conda_usr
 ```
 将需要的用户加入该组，注意，如果是新增一个用户，则执行（记得替换username为你想要的名字）：
 ```shell
+# centos
 useradd username -g conda_usr
 ```
 如果是已有用户，则执行（记得替换username为你想要的名字）：
 ```shell
+sudo adduser username
 usermod -a -G conda_usr username
 ```
 
