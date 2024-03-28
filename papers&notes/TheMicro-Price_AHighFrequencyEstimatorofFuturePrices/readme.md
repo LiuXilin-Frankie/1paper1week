@@ -91,3 +91,63 @@ $$
 $$
 g^{i+1}(I,S) = E[g^{i}(I_{\tau_1},S_{\tau_1})|I_t,S_t],\  compute \ recursively
 $$
+
+## Finite state space example
+
+现在在我们已知 $(M_t, I_t, S_t)$, 要估计fair price。为了对离散过程进行建模同时减少计算量，我们进行以下处理：
+
+1. 我们把 $I_t$ 分为 n 段，每一段的表示为如下公式。比如说[1，2，3，4，5]分别表示imbalance程度为[0-0.2, 0.2-0.4, 0.4-0.6, 0.6-0.8, 0.8-1.0]：
+$$
+I_t=\sum_{j=1}^nj\mathbb{1}_{\left(\frac{j-1}{n}<\frac{Q_t^b}{Q_t^b+Q_t^a}\leq\frac{j}{n}\right)}
+$$
+
+2. 同时 spread 的值为离散值，服从 1<= s <= m
+
+所以状态 $(I_t, S_t)$ 为离散值，且取值有 nm 个。
+
+3. 我们使用$K=\begin{bmatrix}-0.01,-0.005,0.005,0.01\end{bmatrix}^T$来表示 mid-price 的变动，（或者取值为 -1个tick，-0.5个tick， 0.5个tick， 1个tick）
+
+则对于下一个时刻的 mid-price 的变动来说，服从以下的公式：
+
+$$\begin{aligned}
+G^{1}(x)& =\mathbb{E}\left[M_{\tau_{1}}-M_{t}|X_{t}=x\right]  \\
+&= \sum_{k\in K}k\cdot\mathbb{P}(M_{\tau_{1}}-M_{t}=k|X_{t}=x)  \\
+&=\sum_{k\in K}\sum_{u}k\cdot\mathbb{P}(M_{\tau_{1}}-M_{t}=k\wedge\tau_{1}-t=u|X_{t}=x)
+\end{aligned}$$
+
+我们估计两种状态：
+1. R := absorbing states, 可以理解为在给定 $(I_t, S_t)$ 下，mid-price发生改变k的概率，其中k是上文中定义的K的取值。所以矩阵的维度是 4 x nm
+$$R_{xk}:=\mathbb{P}(M_{t+1}-M_t=k|X_t=x)$$
+
+
+2. Q :=  transient states, 可以理解为在给定 $x = (I_t, S_t)$ 下，mid-price 不发生改变且下一个状态是新的$y = (I_t, S_t)$ 的概率。所以矩阵的维度是 nm x nm
+$$Q_{xy}:=\mathbb{P}(M_{t+1}-M_t=0\wedge X_{t+1}=y|X_t=x)$$
+
+所以下一个时刻，mid-price 发生改变的期望是：
+$$G^1(x)=\bigl(\sum_sQ^{s-1}R\bigr)K=\bigl(1-Q\bigr)^{-1}RK$$
+
+通过递归我们就可以算出来$G^{i+1}(x)$
+
+
+### 最终公式
+
+为了方便计算，我们重新定义 absorbing states T, 新的矩阵维度是 nm x nm:
+$$T_{xy}:=\mathbb{P}(M_{t+1}-M_t\neq0\wedge X_{t+1}=y|X_t=x)$$
+
+定义$B:=\left(1-Q\right)^{-1}T$， B 显然是一个 nm x nm 的矩阵。则最终的价格为：
+$$P_t^i=M_t+\sum_{k=0}^iB^kG^1$$
+
+THEOREM $3.1\quad If\:B^*=\lim_{k\to\infty}B^k\:and\:B^*G^1=0,\:then\:the\:limit$
+$\lim_{i\to\infty}P_{t}^{i}=P_{t}^{micro}$
+$converges.$
+
+The matrix $B$ is a regular stochastic matrix so it can be decomposed
+
+$$
+B=B^*+\sum_{j=2}^{nm}\lambda_jB_j
+$$
+
+所以最终的公式为：
+
+$$P_t^{micro}=\lim\limits_{i\to\infty}P_t^i=M_t+G^1+\sum\limits_{j=2}^{nm}\frac{\lambda_j}{1-\lambda_j}B_jG^1$$
+
