@@ -17,7 +17,7 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 :warning: please install [MathJax](https://github.com/orsharir/github-mathjax) if your chrome cannot display formula in a right way. If it cannot display in the right way, try restart chrome or reflash.
 
 ## Time line
-| No. | Paper Name | Read Time | Tag | Remark
+| No. | Paper Name | Read Time | Tag | Remark |
 | --- | ---------- | --------- | --- | ------ |
 | 1 | [Exploring Market Making Strategy for High Frequency Trading: An Agent-Based Approach](papers&notes/ExploringMarketMakingStrategyforHighFrequencyTrading_AnAgent-BasedApproach) | 2023.11.04 | market making | 
 | 2 | [The Micro-Price: A High Frequency Estimator of Future Prices](papers&notes/TheMicro-Price_AHighFrequencyEstimatorofFuturePrices) | 2023.11.13 | mid price | method about how to build model|
