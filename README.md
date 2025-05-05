@@ -29,4 +29,5 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 | 8 | [High frequency lead/lag relationships — Empirical facts](papers&notes/HighFrequencyLeadLagRelationships—EmpiricalFacts) | 2024.01.19 | lead-lag | |
 | 9 | [On covariance estimation of non-synchronously observed diffusion processes](papers&notes/OnCovarianceEstimationofNon-synchronouslyObservedDiffusionProcesses) | 2024.01.29 | covariance estimation | |
 | 10 | [Low-Latency Liquidity Inefficiency Strategies](papers&notes/Low-LatencyLiquidityInefficiencyStrategies) | 2024.03.01 | limit order book | |
+| 11 | [XGBoost Algorithm Details](papers&notes/XGBoost_algo_notes) | 2025.05.01 | ML Algo | XGBoost 算法细节详细梳理 |
 
