@@ -30,4 +30,5 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 | 9 | [On covariance estimation of non-synchronously observed diffusion processes](papers&notes/OnCovarianceEstimationofNon-synchronouslyObservedDiffusionProcesses) | 2024.01.29 | covariance estimation | |
 | 10 | [Low-Latency Liquidity Inefficiency Strategies](papers&notes/Low-LatencyLiquidityInefficiencyStrategies) | 2024.03.01 | limit order book | |
 | 11 | [XGBoost Algorithm Details](papers&notes/XGBoost_algo_notes) | 2025.05.01 | ML Algo | XGBoost 算法细节详细梳理 |
+| 12 | [Universal Trading for Order Execution with Oracle Policy Distillation](papers&notes/Universal_Trading_for_Order_Execution_with_Oracle_Policy_Distillation) | 2025.05.20 | DL Trading | Qlib相关的高频交易论文 |
 
