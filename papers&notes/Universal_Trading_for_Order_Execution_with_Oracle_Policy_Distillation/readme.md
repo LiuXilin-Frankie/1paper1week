@@ -22,7 +22,44 @@ $$\bar{P}=\frac{\sum_{t=0}^{T-1}(q_{t+1}\cdotp_{t+1})}{\sum_{t=0}^{T-1}q_{t+1}}=
 
 这种情况下回测忽略手续费是合理的，因为你总是要卖出某些单位数量的股票，这个问题的本质是如何把原本的任务执行的更优，而不是一个 `single asset trading signal`问题
 
-## 
+## 强化学习的MDP过程
+
+在已知状态$s_t$下，策略遵守交易规则$\pi$生成下一步的动作，即$a_t = \pi(s_t)$，为下一时刻的成交量，即$q_{t+1} = a_t * Q $。最后时刻全部订单必须被完全交易，所以最后时刻的$a_{T-1}=\max\{1-\sum_{i=0}^{T-2}a_{i},\pi(s_{T-1})\}$。奖励函数为：
+$$\hat{R}_{t}^{+}(s_{t},a_{t})=\frac{q_{t+1}}{Q}\cdot\overbrace{\left(\frac{p_{t+1}-\tilde{p}}{\tilde{p}}\right)}^{\text{price mormalization}}=a_{t}\left(\frac{p_{t+1}}{\tilde{p}}-1\right)$$
+其中$\tilde{p}=\frac{1}{T}\sum_{i=0}^{T-1}p_{i+1}$是整个时间段的平均价格，作者这里承认使用了未来信息，但是它认为只在训练教师的时候作为反向传播使用，不存在信息泄露。
+
+同时作者还增加了流动性惩罚，市场冲击成本，即$$\hat{R}_t^-=-\alpha(a_t)^2$$
+
+所以最终的奖励函数是：
+$$\begin{aligned}
+R_{t}(s_{t},a_{t}) & =\hat{R}_{t}^{+}(\boldsymbol{s}_{t},a_{t})+\hat{R}_{t}^{-}(\boldsymbol{s}_{t},a_{t}) \\
+ & =\left(\frac{p_{t+1}}{\tilde{p}}-1\right)a_{t}-\alpha\left(a_{t}\right)^{2}.
+\end{aligned}$$
+
+所以强化学习的最终目标就是解决下述的优化问题：$$\arg\max_\pi\mathbb{E}_\pi\left[\sum_{t=0}^{T-1}\gamma^tR_t(s_t,a_t)\right].$$
+
+
+## Policy Distillation
+教师学习全局信息，做出交易决策；学生学习教师的决策并且进行模仿，使用的信息是不完全的部分的历史信息。为了建立学生和教师之间的联系，我们使用这样的损失函数评估（其中$\tilde{a}_t$表示教师在t时刻的决策：
+$$L_d=-\mathbb{E}_t\left[\log\Pr(a_t=\tilde{a}_t|\pi_{\boldsymbol{\theta}},\boldsymbol{s}_t;\pi_{\boldsymbol{\phi}},\tilde{\boldsymbol{s}}_t)\right],$$
+
+这里缺乏理解，后面需要结合补充材料和代码去看，最终的损失函数如下，教师和学生都使用PPO进行训练，对于教师来说不适用最后一项的策略蒸馏损失：$$L(\theta)=\overbrace{L_{p}+\lambda L_{v}}^{\text{poticy optimization}}+\overbrace{\mu L_{d}}^{\text{poticy distitlation}},$$
+
+## 实验对比
+
+作者使用：
+1. TWAP
+2. VWAP
+3. AC
+4. DDQN
+5. PPO
+
+进行对比，其中前三个作者认为是基于模型的，后两个作者认为是基于学习的。结论是学生策略优于所有其它策略（劣于教师策略），所以Oracle的策略蒸馏是有效的，同时OPD优于其它的强化学习策略，作者认为说明奖励函数是有效的
+
+## 疑点
+1. 作者使用全部的A股数据训练，使用样本时间外，沪深300作为验证集和训练集。更换数据集会怎么样？
+2. DDQN、PPO原论文不是在全部股票上训练，而是一只股票一个模型，那如果是只用一个股票数据训练，OPD效果怎么样？
+3. 作者认为自己设计的奖励函数有效，但是没有控制变量进行试验。
 
 
 
