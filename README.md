@@ -31,4 +31,4 @@ This item is mainly for personal use. Maybe the understanding of the paper I wro
 | 10 | [Low-Latency Liquidity Inefficiency Strategies](papers&notes/Low-LatencyLiquidityInefficiencyStrategies) | 2024.03.01 | limit order book | |
 | 11 | [XGBoost Algorithm Details](papers&notes/XGBoost_algo_notes) | 2025.05.01 | ML Algo | XGBoost 算法细节详细梳理 |
 | 12 | [Universal Trading for Order Execution with Oracle Policy Distillation](papers&notes/Universal_Trading_for_Order_Execution_with_Oracle_Policy_Distillation) | 2025.05.20 | DL Trading | Qlib相关的高频交易论文 |
-
+| 13 | [0DTE Asset Pricing](papers&notes/AssetPricing0DTE) | 2025.05.28 | options pricing |  |
